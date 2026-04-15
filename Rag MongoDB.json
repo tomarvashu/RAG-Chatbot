@@ -1,0 +1,361 @@
+{
+  "name": "Rag MongoDB",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Answer the question asked using the knowledge."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        624,
+        -16
+      ],
+      "id": "760ea6e6-b6dc-40ba-82d5-d0c40eccf4de",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "public": true,
+        "mode": "webhook",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        416,
+        -16
+      ],
+      "id": "1536c6c6-05a7-49e0-89a0-2cd71f3b3970",
+      "name": "When chat message received",
+      "webhookId": "cf99c74f-5070-47c7-8d93-02993944b211"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        496,
+        240
+      ],
+      "id": "25a861ba-f6e3-4040-8931-9832154c7874",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "VKkZuWZW5fTpxfk4",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "databaseName": "knowledge-base",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryMongoDbChat",
+      "typeVersion": 1,
+      "position": [
+        656,
+        240
+      ],
+      "id": "4eb64181-8fc3-4926-a6a0-64ebd73a23e9",
+      "name": "MongoDB Chat Memory",
+      "credentials": {
+        "mongoDb": {
+          "id": "tmtohCdKn6dY1tMu",
+          "name": "MongoDB account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "call this tool to access your knowledge base.",
+        "mongoCollection": {
+          "__rl": true,
+          "value": "data-for-ai",
+          "mode": "list",
+          "cachedResultName": "data-for-ai"
+        },
+        "vectorIndexName": "rag_vector_index",
+        "includeDocumentMetadata": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreMongoDBAtlas",
+      "typeVersion": 1.3,
+      "position": [
+        848,
+        240
+      ],
+      "id": "ef61e35b-d1af-400c-aa1d-2edf7a0f48c6",
+      "name": "MongoDB Atlas Vector Store",
+      "credentials": {
+        "mongoDb": {
+          "id": "tmtohCdKn6dY1tMu",
+          "name": "MongoDB account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1008,
+        416
+      ],
+      "id": "c7f6a1d1-27a5-43ec-b036-5ca593b4fc29",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "VKkZuWZW5fTpxfk4",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFile",
+        "fileToWatch": {
+          "__rl": true,
+          "value": "1sohbrKw9DEGiP7LiMWepggJwc4d2i26q",
+          "mode": "list",
+          "cachedResultName": "AT 6503-JD.pdf",
+          "cachedResultUrl": "https://drive.google.com/file/d/1sohbrKw9DEGiP7LiMWepggJwc4d2i26q/view?usp=drivesdk"
+        }
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -416,
+        0
+      ],
+      "id": "1c04de2b-eff6-4285-9d77-af9f9f100446",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "9N6APrzVNhqvOOVl",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1sohbrKw9DEGiP7LiMWepggJwc4d2i26q",
+          "mode": "list",
+          "cachedResultName": "AT 6503-JD.pdf",
+          "cachedResultUrl": "https://drive.google.com/file/d/1sohbrKw9DEGiP7LiMWepggJwc4d2i26q/view?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -208,
+        0
+      ],
+      "id": "c14c35de-2cdb-4478-a1e1-b7375a9fb643",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "9N6APrzVNhqvOOVl",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "mongoCollection": {
+          "__rl": true,
+          "value": "data-for-ai",
+          "mode": "list",
+          "cachedResultName": "data-for-ai"
+        },
+        "vectorIndexName": "sample_mflix",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreMongoDBAtlas",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "a767dc0c-d3a3-43ff-b01d-708c1d92e041",
+      "name": "MongoDB Atlas Vector Store1",
+      "credentials": {
+        "mongoDb": {
+          "id": "tmtohCdKn6dY1tMu",
+          "name": "MongoDB account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -80,
+        224
+      ],
+      "id": "dc83b392-2359-4d25-96f3-62dcadd856c4",
+      "name": "Embeddings OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "VKkZuWZW5fTpxfk4",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        160,
+        224
+      ],
+      "id": "337412cb-dc71-464e-b00d-57263e1e1efa",
+      "name": "Default Data Loader"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MongoDB Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MongoDB Atlas Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "MongoDB Atlas Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "MongoDB Atlas Vector Store1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "MongoDB Atlas Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "MongoDB Atlas Vector Store1",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "8edf8e11-f6e5-438d-b5e8-9c4f6378c998",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "68a251423bbf1a1fb243908498854747fefc044b5c9e85fe6f46913b8c6bfc64"
+  },
+  "id": "L3hDPWo52JBECv5h",
+  "tags": []
+}
