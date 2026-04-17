@@ -3,7 +3,9 @@
 A Retrieval-Augmented Generation chatbot workflow built in n8n using MongoDB Atlas Vector Search and OpenAI. The system ingests documents from Google Drive into a vector store, then uses an AI agent with memory and retrieval to answer user questions with knowledge-backed responses.
 
 ## My Role
-I initiated this project, defined the retrieval workflow and interaction logic, and actively contributed to its design and refinement. Development was carried out with support from my internal team, while I remained involved in testing, iteration, and execution review.
+I initiated this project and defined the core retrieval workflow, interaction logic, and practical use case it was meant to solve.
+
+As my responsibilities later expanded into broader Operations & Technology leadership, my involvement in the project shifted more from direct implementation toward workflow direction, testing, refinement, and execution review. Development was carried out with support from my internal team, while I remained involved in shaping the system logic and practical usability.
 
 ## What It Does
 - Watches a document in Google Drive
@@ -13,9 +15,10 @@ I initiated this project, defined the retrieval workflow and interaction logic, 
 - Stores vectors in MongoDB Atlas
 - Exposes a chat-triggered AI agent
 - Uses retrieval as a tool for knowledge-based answers
-- Maintains short chat memory in MongoDB
+- Maintains short-term chat memory in MongoDB
 
 ## Workflow Overview
+
 ### Document Ingestion
 1. Google Drive Trigger watches a specific file
 2. The file is downloaded automatically
@@ -49,4 +52,3 @@ Before publishing publicly, remove or replace:
 - private database names
 - private collection names
 - internal credentials
-- company-specific documents
